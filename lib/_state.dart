@@ -156,7 +156,9 @@ class _InfinitePageViewState extends State<InfinitePageView> {
     final itemCount = widget.itemCount;
 
     return SliverChildBuilderDelegate(
-      (context, index) => widget.itemBuilder(context, -index),
+      (context, index) => index != 0
+          ? widget.itemBuilder(context, -index)
+          : const SizedBox.shrink(),
       childCount: itemCount != null ? math.max(0, itemCount * 2 - 1) : null,
       addAutomaticKeepAlives: widget.addAutomaticKeepAlives,
       addRepaintBoundaries: widget.addRepaintBoundaries,
