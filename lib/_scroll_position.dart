@@ -9,9 +9,11 @@ class _InfiniteScrollPosition extends ScrollPositionWithSingleContext {
     super.oldPosition,
     super.debugLabel,
     this.negativeScroll = false,
+    this.didChangeViewportDimension,
   });
 
   final bool negativeScroll;
+  final void Function(double viewportDimension)? didChangeViewportDimension;
 
   void _forceNegativePixels(double value) {
     super.forcePixels(-value);
@@ -36,4 +38,11 @@ class _InfiniteScrollPosition extends ScrollPositionWithSingleContext {
 
   @override
   double get maxScrollExtent => double.infinity;
+
+  @override
+  bool applyViewportDimension(double viewportDimension) {
+    final result = super.applyViewportDimension(viewportDimension);
+    didChangeViewportDimension?.call(viewportDimension);
+    return result;
+  }
 }
